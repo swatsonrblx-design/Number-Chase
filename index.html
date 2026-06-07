@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number Chase</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-strong: #e5ecf4;
+      --text: #1b2838;
+      --muted: #607487;
+      --accent: #4f8bff;
+      --accent-soft: #d9e7ff;
+      --success: #1f9f6b;
+      --danger: #e85656;
+      font-family: "Inter", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at top left, rgba(79, 139, 255, 0.16), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(31, 159, 107, 0.12), transparent 24%),
+        linear-gradient(180deg, #f8fbff 0%, #eff4fb 100%);
+    }
+
+    .game-shell {
+      width: min(100%, 720px);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: 0 24px 50px rgba(42, 60, 90, 0.14);
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      outline: 3px solid rgba(0, 0, 0, 0.95);
+    }
+
+    .hero {
+      padding: 22px 20px 14px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 12px;
+      background: linear-gradient(180deg, #ffffff 0%, #f6f9ff 100%);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 2.2vw, 2.4rem);
+      color: var(--text);
+      letter-spacing: -0.04em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 42rem;
+    }
+
+    .target-card {
+      display: grid;
+      gap: 8px;
+      justify-content: stretch;
+      background: var(--surface-strong);
+      border-radius: 24px;
+      padding: 18px;
+      align-items: center;
+      border: 1px solid rgba(79, 139, 255, 0.16);
+    }
+
+    .target-card span {
+      font-size: 0.92rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .target-value {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      margin: 0;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+    }
+
+    .main-panel {
+      padding: 24px 28px 32px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .score-board {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .stat-box {
+      background: var(--surface-strong);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(96, 116, 135, 0.12);
+      min-height: 92px;
+    }
+
+    .stat-box h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .stat-box p {
+      margin: 0;
+      font-size: clamp(1.6rem, 2vw, 2.2rem);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(79, 139, 255, 0.08), rgba(31, 159, 107, 0.08));
+      border: 1px solid rgba(79, 139, 255, 0.12);
+    }
+
+    .status-bar .status-label {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .status-bar .status-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .status-text.success {
+      color: var(--success);
+    }
+
+    .status-text.fail {
+      color: var(--danger);
+    }
+
+    .action-panel {
+      display: grid;
+      gap: 18px;
+    }
+
+    .big-button {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: none;
+      background: linear-gradient(135deg, #4f8bff, #70a4ff);
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+      box-shadow: 0 14px 24px rgba(79, 139, 255, 0.22);
+    }
+
+    .big-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .big-button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .power-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .power-card {
+      background: var(--surface-strong);
+      border-radius: 18px;
+      border: 1px solid rgba(96, 116, 135, 0.12);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .power-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 30px rgba(79, 139, 255, 0.12);
+      border-color: rgba(79, 139, 255, 0.18);
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .power-card.selected {
+      background: rgba(79, 139, 255, 0.12);
+      border-color: rgba(79, 139, 255, 0.3);
+    }
+
+    .power-card button.selected {
+      background: #1f5cd9;
+      box-shadow: 0 10px 20px rgba(31, 92, 217, 0.18);
+    }
+
+    .power-card h3 {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .power-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .power-card button {
+      align-self: start;
+      border: none;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.16s ease, background 0.16s ease, opacity 0.16s ease;
+      color: #fff;
+      background: linear-gradient(135deg, #4f8bff, #70a4ff);
+      box-shadow: 0 10px 20px rgba(79, 139, 255, 0.16);
+    }
+
+    .power-card button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .power-card button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .target-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .target-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(79, 139, 255, 0.12), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(31, 159, 107, 0.08), transparent 28%);
+      pointer-events: none;
+    }
+
+    .status-text.glow {
+      animation: glowPulse 1s ease;
+    }
+
+    .pulse {
+      animation: popPulse 0.35s ease;
+    }
+
+    @keyframes popPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 1; transform: translateY(0); }
+      50% { opacity: 0.96; transform: translateY(-3px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero,
+    .score-board,
+    .status-bar,
+    .power-grid,
+    .footer {
+      animation: floatIn 0.5s ease both;
+    }
+
+    .power-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(79, 139, 255, 0.12);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.84rem;
+    }
+
+    .footer {
+      padding: 18px 28px 22px;
+      border-top: 1px solid rgba(96, 116, 135, 0.10);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .footer button {
+      border: 1px solid rgba(79, 139, 255, 0.24);
+      background: #ffffff;
+      color: var(--text);
+      border-radius: 18px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .footer button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(79, 139, 255, 0.12);
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 24px 20px 10px;
+      }
+
+      .main-panel {
+        padding: 22px 20px 26px;
+      }
+
+      .score-board {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-shell">
+    <section class="hero">
+      <div>
+        <h1>Number Chase</h1>
+        <p>Reach the target exactly before you overshoot. Advance +50 each click, then use powerups freely to reach the target faster.</p>
+      </div>
+      <div class="target-card">
+        <span>Target Number</span>
+        <p class="target-value" id="targetValue">0</p>
+        <span style="color: var(--muted);">Each round resets on a new number between 50,000 and 180,000.</span>
+      </div>
+    </section>
+
+    <section class="main-panel">
+      <div class="score-board">
+        <div class="stat-box">
+          <h2>Current Score</h2>
+          <p id="scoreValue">0</p>
+        </div>
+        <div class="stat-box">
+          <h2>Remaining</h2>
+          <p id="remainingValue">0</p>
+        </div>
+        <div class="stat-box">
+          <h2>Best Round</h2>
+          <p id="bestValue">0</p>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <div>
+          <div class="status-label">Game status</div>
+          <div id="statusText" class="status-text">Ready to chase the target.</div>
+        </div>
+        <button class="big-button" id="clickButton">Advance +50</button>
+      </div>
+
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px;">
+          <div style="font-weight:700; color: var(--text); font-size:1rem;">Powerups</div>
+          <div style="color: var(--muted); font-size:0.95rem;">Use them freely to move faster.</div>
+        </div>
+        <div class="power-grid">
+          <div class="power-card" id="quickCard">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+              <h3>Quick Surge</h3>
+              <span class="power-count" id="quickCount">∞</span>
+            </div>
+            <button id="quickButton" data-label="Select +500">Select +500</button>
+          </div>
+          <div class="power-card" id="strikeCard">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+              <h3>Power Strike</h3>
+              <span class="power-count" id="strikeCount">∞</span>
+            </div>
+            <button id="strikeButton" data-label="Select +1,000">Select +1,000</button>
+          </div>
+          <div class="power-card" id="megaCard">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+              <h3>Mega Boost</h3>
+              <span class="power-count" id="megaCount">∞</span>
+            </div>
+            <button id="megaButton" data-label="Select +5,000">Select +5,000</button>
+          </div>
+          <div class="power-card" id="giantCard">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+              <h3>Giant Jump</h3>
+              <span class="power-count" id="giantCount">∞</span>
+            </div>
+            <button id="giantButton" data-label="Select +10,000">Select +10,000</button>
+          </div>
+          <div class="power-card" id="doubleACard">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+              <h3>Double Strike</h3>
+              <span class="power-count" id="doubleACount">2</span>
+            </div>
+            <button id="doubleAButton" data-label="Select ×2">Select ×2</button>
+          </div>
+          <div class="power-card" id="doubleBCard">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+              <h3>Double Surge</h3>
+              <span class="power-count" id="doubleBCount">2</span>
+            </div>
+            <button id="doubleBButton" data-label="Select ×2">Select ×2</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>Exact target wins the round. Overshoot and the game auto-resets.</div>
+      <button id="resetButton">Restart with New Target</button>
+    </footer>
+  </div>
+
+  <script>
+    const MIN_TARGET = 50000;
+    const MAX_TARGET = 180000;
+
+    const targetValue = document.getElementById('targetValue');
+    const scoreValue = document.getElementById('scoreValue');
+    const remainingValue = document.getElementById('remainingValue');
+    const bestValue = document.getElementById('bestValue');
+    const statusText = document.getElementById('statusText');
+
+    const clickButton = document.getElementById('clickButton');
+    const quickButton = document.getElementById('quickButton');
+    const strikeButton = document.getElementById('strikeButton');
+    const megaButton = document.getElementById('megaButton');
+    const giantButton = document.getElementById('giantButton');
+    const doubleAButton = document.getElementById('doubleAButton');
+    const doubleBButton = document.getElementById('doubleBButton');
+    const resetButton = document.getElementById('resetButton');
+
+    const quickCountLabel = document.getElementById('quickCount');
+    const strikeCountLabel = document.getElementById('strikeCount');
+    const megaCountLabel = document.getElementById('megaCount');
+    const giantCountLabel = document.getElementById('giantCount');
+    const doubleACountLabel = document.getElementById('doubleACount');
+    const doubleBCountLabel = document.getElementById('doubleBCount');
+
+    const powerButtons = {
+      quick: quickButton,
+      strike: strikeButton,
+      mega: megaButton,
+      giant: giantButton,
+      doubleA: doubleAButton,
+      doubleB: doubleBButton,
+    };
+
+    const powerButtonLabels = {
+      quick: 'Select +500',
+      strike: 'Select +1,000',
+      mega: 'Select +5,000',
+      giant: 'Select +10,000',
+      doubleA: 'Select ×2',
+      doubleB: 'Select ×2',
+    };
+
+    const powerLabels = {
+      quick: quickCountLabel,
+      strike: strikeCountLabel,
+      mega: megaCountLabel,
+      giant: giantCountLabel,
+      doubleA: doubleACountLabel,
+      doubleB: doubleBCountLabel,
+    };
+
+    const powerCards = {
+      quick: document.getElementById('quickCard'),
+      strike: document.getElementById('strikeCard'),
+      mega: document.getElementById('megaCard'),
+      giant: document.getElementById('giantCard'),
+      doubleA: document.getElementById('doubleACard'),
+      doubleB: document.getElementById('doubleBCard'),
+    };
+
+    const BEST_SCORE_KEY = 'number-chase-best-score';
+    let target = 0;
+    let score = 0;
+    let bestScore = Number(localStorage.getItem(BEST_SCORE_KEY) || '0');
+    if (Number.isNaN(bestScore)) bestScore = 0;
+    let active = true;
+    let powerCounts = {
+      quick: -1,
+      strike: -1,
+      mega: -1,
+      giant: -1,
+      doubleA: 2,
+      doubleB: 2,
+    };
+
+    let selectedPowerups = {
+      quick: false,
+      strike: false,
+      mega: false,
+      giant: false,
+      doubleA: false,
+      doubleB: false,
+    };
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playTone(freq, duration, type = 'sine', volume = 0.08) {
+      if (!audioCtx) return;
+      const oscillator = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      oscillator.type = type;
+      oscillator.frequency.value = freq;
+      gain.gain.value = volume;
+      oscillator.connect(gain);
+      gain.connect(audioCtx.destination);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + duration);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    }
+
+    function playEffect(name) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      switch (name) {
+        case 'click':
+          playTone(420, 0.08, 'triangle', 0.08);
+          break;
+        case 'power':
+          playTone(540, 0.12, 'sine', 0.1);
+          playTone(780, 0.08, 'triangle', 0.07);
+          break;
+        case 'win':
+          playTone(760, 0.16, 'triangle', 0.14);
+          setTimeout(() => playTone(900, 0.12, 'sine', 0.1), 120);
+          break;
+        case 'bust':
+          playTone(200, 0.18, 'square', 0.11);
+          break;
+        case 'reset':
+          playTone(520, 0.1, 'sine', 0.08);
+          break;
+      }
+    }
+
+    function randomTarget() {
+      const minStep = Math.ceil(MIN_TARGET / 50);
+      const maxStep = Math.floor(MAX_TARGET / 50);
+      const step = Math.floor(Math.random() * (maxStep - minStep + 1)) + minStep;
+      return step * 50;
+    }
+
+    function clamp(value) {
+      return Math.max(0, Math.min(value, MAX_TARGET));
+    }
+
+    function formatNumber(value) {
+      return value.toLocaleString('en-US');
+    }
+
+    function calculatePowerCounts(targetValue) {
+      return {
+        quick: -1,
+        strike: -1,
+        mega: -1,
+        giant: -1,
+        doubleA: 2,
+        doubleB: 2,
+      };
+    }
+
+    function animateElement(element) {
+      element.classList.add('pulse');
+      element.addEventListener('animationend', () => element.classList.remove('pulse'), { once: true });
+    }
+
+    function getComboDescription(addValue, multiplier) {
+      const pieces = ['+50'];
+      if (selectedPowerups.quick) pieces.push('+500');
+      if (selectedPowerups.strike) pieces.push('+1000');
+      if (selectedPowerups.mega) pieces.push('+5000');
+      if (selectedPowerups.giant) pieces.push('+10000');
+      let description = pieces.join(' + ');
+      if (multiplier > 1) description = `(${description}) × ${multiplier}`;
+      return description;
+    }
+
+    function togglePowerup(key) {
+      if (!active) return;
+      if ((key === 'doubleA' || key === 'doubleB') && powerCounts[key] === 0) return;
+      selectedPowerups[key] = !selectedPowerups[key];
+      if ((key === 'doubleA' || key === 'doubleB') && selectedPowerups[key] && score === 0) {
+        // don't allow doubling from zero until score starts moving
+        selectedPowerups[key] = false;
+        return;
+      }
+      updateStats();
+    }
+
+    function updateStats() {
+      targetValue.textContent = formatNumber(target);
+      scoreValue.textContent = formatNumber(score);
+      remainingValue.textContent = formatNumber(Math.max(0, target - score));
+      bestValue.textContent = formatNumber(bestScore);
+
+      Object.keys(powerCounts).forEach((key) => {
+        const count = powerCounts[key];
+        powerLabels[key].textContent = count < 0 ? '∞' : count;
+        const disabled = !active || (count >= 0 && count === 0) || ((key === 'doubleA' || key === 'doubleB') && score === 0);
+        powerButtons[key].disabled = disabled;
+        powerButtons[key].classList.toggle('selected', selectedPowerups[key]);
+        powerCards[key].classList.toggle('selected', selectedPowerups[key]);
+        powerButtons[key].textContent = selectedPowerups[key] ? 'Selected' : powerButtonLabels[key];
+      });
+
+      clickButton.disabled = !active;
+    }
+
+    function setStatus(message, type = '') {
+      statusText.textContent = message;
+      statusText.className = 'status-text';
+      if (type) {
+        statusText.classList.add(type);
+      }
+      statusText.classList.add('glow');
+      statusText.addEventListener('animationend', () => statusText.classList.remove('glow'), { once: true });
+    }
+
+    function endRound(result) {
+      active = false;
+      if (result === 'win') {
+        setStatus('Perfect match! You completed the round.', 'success');
+        bestScore = Math.max(bestScore, score);
+        localStorage.setItem(BEST_SCORE_KEY, String(bestScore));
+        playEffect('win');
+      } else {
+        setStatus('Too high! You overshot the target. Restarting soon.', 'fail');
+        playEffect('bust');
+        setTimeout(startNewRound, 1800);
+      }
+      updateStats();
+    }
+
+    function processChange(newScore, source) {
+      if (!active) return;
+      score = clamp(newScore);
+      animateElement(scoreValue);
+
+      if (score === target) {
+        endRound('win');
+      } else if (score > target) {
+        endRound('bust');
+      } else {
+        setStatus(`Used ${source}. Keep going!`);
+        playEffect(source === '+50 advance' ? 'click' : 'power');
+        updateStats();
+      }
+    }
+
+    function startNewRound() {
+      target = randomTarget();
+      score = 0;
+      powerCounts = calculatePowerCounts(target);
+      active = true;
+      setStatus('Ready to chase the target. Advance +50 or use powerups freely.');
+      updateStats();
+      animateElement(targetValue);
+      playEffect('reset');
+    }
+
+    clickButton.addEventListener('click', () => {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const baseAdvance = 50;
+      let addValue = baseAdvance;
+      if (selectedPowerups.quick) addValue += 500;
+      if (selectedPowerups.strike) addValue += 1000;
+      if (selectedPowerups.mega) addValue += 5000;
+      if (selectedPowerups.giant) addValue += 10000;
+      let multiplier = 1;
+      if (selectedPowerups.doubleA) multiplier *= 2;
+      if (selectedPowerups.doubleB) multiplier *= 2;
+      const comboDescription = getComboDescription(addValue, multiplier);
+      playEffect(addValue === 50 ? 'click' : 'power');
+      processChange(score + addValue * multiplier, comboDescription);
+
+      if (selectedPowerups.doubleA) {
+        powerCounts.doubleA -= 1;
+        selectedPowerups.doubleA = powerCounts.doubleA > 0;
+      }
+      if (selectedPowerups.doubleB) {
+        powerCounts.doubleB -= 1;
+        selectedPowerups.doubleB = powerCounts.doubleB > 0;
+      }
+      selectedPowerups.quick = false;
+      selectedPowerups.strike = false;
+      selectedPowerups.mega = false;
+      selectedPowerups.giant = false;
+      updateStats();
+    });
+
+    quickButton.addEventListener('click', () => {
+      togglePowerup('quick');
+    });
+
+    strikeButton.addEventListener('click', () => {
+      togglePowerup('strike');
+    });
+
+    megaButton.addEventListener('click', () => {
+      togglePowerup('mega');
+    });
+
+    giantButton.addEventListener('click', () => {
+      togglePowerup('giant');
+    });
+
+    doubleAButton.addEventListener('click', () => {
+      togglePowerup('doubleA');
+    });
+
+    doubleBButton.addEventListener('click', () => {
+      togglePowerup('doubleB');
+    });
+
+    resetButton.addEventListener('click', () => {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      playEffect('reset');
+      startNewRound();
+    });
+
+    startNewRound();
+  </script>
+</body>
+</html>
