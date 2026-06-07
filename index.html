@@ -36,26 +36,26 @@
     }
 
     .game-shell {
-      width: min(100%, 760px);
+      width: min(100%, 720px);
       background: var(--surface);
-      border-radius: 32px;
-      box-shadow: 0 32px 70px rgba(42, 60, 90, 0.12);
+      border-radius: 28px;
+      box-shadow: 0 24px 50px rgba(42, 60, 90, 0.14);
       overflow: hidden;
-      border: 1px solid rgba(0, 0, 0, 0.18);
-      outline: 2px solid rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      outline: 3px solid rgba(0, 0, 0, 0.95);
     }
 
     .hero {
-      padding: 36px 40px 30px;
+      padding: 22px 20px 14px;
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
-      gap: 24px;
+      gap: 12px;
       background: linear-gradient(180deg, #ffffff 0%, #f6f9ff 100%);
     }
 
     .hero h1 {
-      margin: 0 0 14px;
-      font-size: clamp(2rem, 2.3vw, 2.6rem);
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 2.2vw, 2.4rem);
       color: var(--text);
       letter-spacing: -0.04em;
     }
@@ -63,17 +63,17 @@
     .hero p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.7;
-      max-width: 44rem;
+      line-height: 1.6;
+      max-width: 42rem;
     }
 
     .target-card {
       display: grid;
-      gap: 10px;
+      gap: 8px;
       justify-content: stretch;
       background: var(--surface-strong);
       border-radius: 24px;
-      padding: 24px;
+      padding: 18px;
       align-items: center;
       border: 1px solid rgba(79, 139, 255, 0.16);
     }
@@ -93,23 +93,23 @@
     }
 
     .main-panel {
-      padding: 32px 40px 40px;
+      padding: 24px 28px 32px;
       display: grid;
-      gap: 28px;
+      gap: 22px;
     }
 
     .score-board {
       display: grid;
-      gap: 16px;
+      gap: 12px;
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .stat-box {
       background: var(--surface-strong);
-      border-radius: 22px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 16px;
       border: 1px solid rgba(96, 116, 135, 0.12);
-      min-height: 108px;
+      min-height: 92px;
     }
 
     .stat-box h2 {
@@ -132,9 +132,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 20px 22px;
-      border-radius: 24px;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 20px;
       background: linear-gradient(135deg, rgba(79, 139, 255, 0.08), rgba(31, 159, 107, 0.08));
       border: 1px solid rgba(79, 139, 255, 0.12);
     }
@@ -142,8 +142,8 @@
     .status-bar .status-label {
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      font-size: 0.78rem;
       font-weight: 700;
     }
 
@@ -168,16 +168,16 @@
 
     .big-button {
       width: 100%;
-      padding: 20px 22px;
-      border-radius: 18px;
+      padding: 16px 18px;
+      border-radius: 16px;
       border: none;
       background: linear-gradient(135deg, #4f8bff, #70a4ff);
       color: #ffffff;
-      font-size: 1.15rem;
+      font-size: 1rem;
       font-weight: 800;
       cursor: pointer;
       transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
-      box-shadow: 0 18px 30px rgba(79, 139, 255, 0.22);
+      box-shadow: 0 14px 24px rgba(79, 139, 255, 0.22);
     }
 
     .big-button:hover:not(:disabled) {
@@ -192,30 +192,40 @@
 
     .power-grid {
       display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     }
 
     .power-card {
       background: var(--surface-strong);
-      border-radius: 22px;
+      border-radius: 18px;
       border: 1px solid rgba(96, 116, 135, 0.12);
-      padding: 22px;
+      padding: 16px;
       display: grid;
-      gap: 14px;
-      transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+      gap: 10px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
 
     .power-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 24px 42px rgba(79, 139, 255, 0.14);
-      border-color: rgba(79, 139, 255, 0.22);
-      background: rgba(255, 255, 255, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 30px rgba(79, 139, 255, 0.12);
+      border-color: rgba(79, 139, 255, 0.18);
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .power-card.selected {
+      background: rgba(79, 139, 255, 0.12);
+      border-color: rgba(79, 139, 255, 0.3);
+    }
+
+    .power-card button.selected {
+      background: #1f5cd9;
+      box-shadow: 0 10px 20px rgba(31, 92, 217, 0.18);
     }
 
     .power-card h3 {
       margin: 0;
-      font-size: 1rem;
+      font-size: 0.92rem;
       color: var(--text);
     }
 
@@ -229,15 +239,15 @@
     .power-card button {
       align-self: start;
       border: none;
-      border-radius: 16px;
-      padding: 12px 16px;
-      font-size: 0.98rem;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
       transition: transform 0.16s ease, background 0.16s ease, opacity 0.16s ease;
       color: #fff;
       background: linear-gradient(135deg, #4f8bff, #70a4ff);
-      box-shadow: 0 12px 24px rgba(79, 139, 255, 0.16);
+      box-shadow: 0 10px 20px rgba(79, 139, 255, 0.16);
     }
 
     .power-card button:hover:not(:disabled) {
@@ -300,21 +310,21 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 44px;
-      padding: 6px 10px;
+      min-width: 36px;
+      padding: 5px 8px;
       border-radius: 999px;
       background: rgba(79, 139, 255, 0.12);
       color: var(--accent);
       font-weight: 700;
-      font-size: 0.96rem;
+      font-size: 0.84rem;
     }
 
     .footer {
-      padding: 24px 40px 32px;
+      padding: 18px 28px 22px;
       border-top: 1px solid rgba(96, 116, 135, 0.10);
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
       justify-content: space-between;
       align-items: center;
       color: var(--muted);
@@ -340,11 +350,11 @@
     @media (max-width: 760px) {
       .hero {
         grid-template-columns: 1fr;
-        padding: 30px 28px 26px;
+        padding: 24px 20px 10px;
       }
 
       .main-panel {
-        padding: 28px 28px 34px;
+        padding: 22px 20px 26px;
       }
 
       .score-board {
@@ -358,7 +368,7 @@
     <section class="hero">
       <div>
         <h1>Number Chase</h1>
-        <p>Reach the target exactly before you overshoot. Click +1 to grow your score, then use powerups strategically to close the gap faster.</p>
+        <p>Reach the target exactly before you overshoot. Advance +50 each click, then use powerups freely to reach the target faster.</p>
       </div>
       <div class="target-card">
         <span>Target Number</span>
@@ -388,62 +398,56 @@
           <div class="status-label">Game status</div>
           <div id="statusText" class="status-text">Ready to chase the target.</div>
         </div>
-        <button class="big-button" id="clickButton">Click +1</button>
+        <button class="big-button" id="clickButton">Advance +50</button>
       </div>
 
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px;">
           <div style="font-weight:700; color: var(--text); font-size:1rem;">Powerups</div>
-          <div style="color: var(--muted); font-size:0.95rem;">Use them wisely.</div>
+          <div style="color: var(--muted); font-size:0.95rem;">Use them freely to move faster.</div>
         </div>
         <div class="power-grid">
-          <div class="power-card">
+          <div class="power-card" id="quickCard">
             <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
               <h3>Quick Surge</h3>
-              <span class="power-count" id="quickCount">0</span>
+              <span class="power-count" id="quickCount">∞</span>
             </div>
-            <p>Add +500 instantly to your score. Fast and reliable for most gaps.</p>
-            <button id="quickButton">Use +500</button>
+            <button id="quickButton" data-label="Select +500">Select +500</button>
           </div>
-          <div class="power-card">
+          <div class="power-card" id="strikeCard">
             <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
               <h3>Power Strike</h3>
-              <span class="power-count" id="strikeCount">0</span>
+              <span class="power-count" id="strikeCount">∞</span>
             </div>
-            <p>Add +1,000 for a strong advance without overshooting too fast.</p>
-            <button id="strikeButton">Use +1,000</button>
+            <button id="strikeButton" data-label="Select +1,000">Select +1,000</button>
           </div>
-          <div class="power-card">
+          <div class="power-card" id="megaCard">
             <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
               <h3>Mega Boost</h3>
-              <span class="power-count" id="megaCount">0</span>
+              <span class="power-count" id="megaCount">∞</span>
             </div>
-            <p>Add +5,000 to jump ahead when you need a big push.</p>
-            <button id="megaButton">Use +5,000</button>
+            <button id="megaButton" data-label="Select +5,000">Select +5,000</button>
           </div>
-          <div class="power-card">
+          <div class="power-card" id="giantCard">
             <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
               <h3>Giant Jump</h3>
-              <span class="power-count" id="giantCount">0</span>
+              <span class="power-count" id="giantCount">∞</span>
             </div>
-            <p>Add +10,000 for the largest boost available.</p>
-            <button id="giantButton">Use +10,000</button>
+            <button id="giantButton" data-label="Select +10,000">Select +10,000</button>
           </div>
-          <div class="power-card">
+          <div class="power-card" id="doubleACard">
             <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
               <h3>Double Strike</h3>
-              <span class="power-count" id="doubleACount">0</span>
+              <span class="power-count" id="doubleACount">2</span>
             </div>
-            <p>Double your score when you're confident you won't overshoot.</p>
-            <button id="doubleAButton">Use ×2</button>
+            <button id="doubleAButton" data-label="Select ×2">Select ×2</button>
           </div>
-          <div class="power-card">
+          <div class="power-card" id="doubleBCard">
             <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
               <h3>Double Surge</h3>
-              <span class="power-count" id="doubleBCount">0</span>
+              <span class="power-count" id="doubleBCount">2</span>
             </div>
-            <p>Second ×2 powerup for bold scaling once the gap is safe.</p>
-            <button id="doubleBButton">Use ×2</button>
+            <button id="doubleBButton" data-label="Select ×2">Select ×2</button>
           </div>
         </div>
       </div>
@@ -490,6 +494,15 @@
       doubleB: doubleBButton,
     };
 
+    const powerButtonLabels = {
+      quick: 'Select +500',
+      strike: 'Select +1,000',
+      mega: 'Select +5,000',
+      giant: 'Select +10,000',
+      doubleA: 'Select ×2',
+      doubleB: 'Select ×2',
+    };
+
     const powerLabels = {
       quick: quickCountLabel,
       strike: strikeCountLabel,
@@ -499,17 +512,37 @@
       doubleB: doubleBCountLabel,
     };
 
+    const powerCards = {
+      quick: document.getElementById('quickCard'),
+      strike: document.getElementById('strikeCard'),
+      mega: document.getElementById('megaCard'),
+      giant: document.getElementById('giantCard'),
+      doubleA: document.getElementById('doubleACard'),
+      doubleB: document.getElementById('doubleBCard'),
+    };
+
+    const BEST_SCORE_KEY = 'number-chase-best-score';
     let target = 0;
     let score = 0;
-    let bestScore = 0;
+    let bestScore = Number(localStorage.getItem(BEST_SCORE_KEY) || '0');
+    if (Number.isNaN(bestScore)) bestScore = 0;
     let active = true;
     let powerCounts = {
-      quick: 0,
-      strike: 0,
-      mega: 0,
-      giant: 0,
-      doubleA: 0,
-      doubleB: 0,
+      quick: -1,
+      strike: -1,
+      mega: -1,
+      giant: -1,
+      doubleA: 2,
+      doubleB: 2,
+    };
+
+    let selectedPowerups = {
+      quick: false,
+      strike: false,
+      mega: false,
+      giant: false,
+      doubleA: false,
+      doubleB: false,
     };
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -554,7 +587,10 @@
     }
 
     function randomTarget() {
-      return Math.floor(Math.random() * (MAX_TARGET - MIN_TARGET + 1)) + MIN_TARGET;
+      const minStep = Math.ceil(MIN_TARGET / 50);
+      const maxStep = Math.floor(MAX_TARGET / 50);
+      const step = Math.floor(Math.random() * (maxStep - minStep + 1)) + minStep;
+      return step * 50;
     }
 
     function clamp(value) {
@@ -566,46 +602,42 @@
     }
 
     function calculatePowerCounts(targetValue) {
-      const scale = (targetValue - MIN_TARGET) / (MAX_TARGET - MIN_TARGET);
-      const normalBudget = 9 + Math.round(scale * 7); // more powerups for larger targets
-      const counts = {
-        quick: Math.max(5, Math.round(4 + scale * 4)),
-        strike: Math.max(3, Math.round(2 + scale * 3)),
-        mega: Math.max(2, Math.round(1 + scale * 2)),
-        giant: Math.max(1, Math.round(1 + scale * 1)),
-        doubleA: 1,
-        doubleB: 1,
+      return {
+        quick: -1,
+        strike: -1,
+        mega: -1,
+        giant: -1,
+        doubleA: 2,
+        doubleB: 2,
       };
-
-      const normalKeys = ['quick', 'strike', 'mega', 'giant'];
-      let normalTotal = normalKeys.reduce((sum, key) => sum + counts[key], 0);
-
-      const reduceOrder = ['giant', 'mega', 'strike', 'quick'];
-      while (normalTotal > normalBudget) {
-        for (const key of reduceOrder) {
-          if (normalTotal <= normalBudget) break;
-          if (counts[key] > 1) {
-            counts[key] -= 1;
-            normalTotal -= 1;
-          }
-        }
-      }
-
-      const growOrder = ['quick', 'strike', 'mega', 'giant'];
-      while (normalTotal < normalBudget) {
-        for (const key of growOrder) {
-          if (normalTotal >= normalBudget) break;
-          counts[key] += 1;
-          normalTotal += 1;
-        }
-      }
-
-      return counts;
     }
 
     function animateElement(element) {
       element.classList.add('pulse');
       element.addEventListener('animationend', () => element.classList.remove('pulse'), { once: true });
+    }
+
+    function getComboDescription(addValue, multiplier) {
+      const pieces = ['+50'];
+      if (selectedPowerups.quick) pieces.push('+500');
+      if (selectedPowerups.strike) pieces.push('+1000');
+      if (selectedPowerups.mega) pieces.push('+5000');
+      if (selectedPowerups.giant) pieces.push('+10000');
+      let description = pieces.join(' + ');
+      if (multiplier > 1) description = `(${description}) × ${multiplier}`;
+      return description;
+    }
+
+    function togglePowerup(key) {
+      if (!active) return;
+      if ((key === 'doubleA' || key === 'doubleB') && powerCounts[key] === 0) return;
+      selectedPowerups[key] = !selectedPowerups[key];
+      if ((key === 'doubleA' || key === 'doubleB') && selectedPowerups[key] && score === 0) {
+        // don't allow doubling from zero until score starts moving
+        selectedPowerups[key] = false;
+        return;
+      }
+      updateStats();
     }
 
     function updateStats() {
@@ -615,8 +647,13 @@
       bestValue.textContent = formatNumber(bestScore);
 
       Object.keys(powerCounts).forEach((key) => {
-        powerLabels[key].textContent = powerCounts[key];
-        powerButtons[key].disabled = !active || powerCounts[key] === 0 || ((key === 'doubleA' || key === 'doubleB') && score === 0);
+        const count = powerCounts[key];
+        powerLabels[key].textContent = count < 0 ? '∞' : count;
+        const disabled = !active || (count >= 0 && count === 0) || ((key === 'doubleA' || key === 'doubleB') && score === 0);
+        powerButtons[key].disabled = disabled;
+        powerButtons[key].classList.toggle('selected', selectedPowerups[key]);
+        powerCards[key].classList.toggle('selected', selectedPowerups[key]);
+        powerButtons[key].textContent = selectedPowerups[key] ? 'Selected' : powerButtonLabels[key];
       });
 
       clickButton.disabled = !active;
@@ -637,6 +674,7 @@
       if (result === 'win') {
         setStatus('Perfect match! You completed the round.', 'success');
         bestScore = Math.max(bestScore, score);
+        localStorage.setItem(BEST_SCORE_KEY, String(bestScore));
         playEffect('win');
       } else {
         setStatus('Too high! You overshot the target. Restarting soon.', 'fail');
@@ -657,7 +695,7 @@
         endRound('bust');
       } else {
         setStatus(`Used ${source}. Keep going!`);
-        playEffect(source === '+1 click' ? 'click' : 'power');
+        playEffect(source === '+50 advance' ? 'click' : 'power');
         updateStats();
       }
     }
@@ -667,7 +705,7 @@
       score = 0;
       powerCounts = calculatePowerCounts(target);
       active = true;
-      setStatus('Ready to chase the target. Click +1 or use powerups.');
+      setStatus('Ready to chase the target. Advance +50 or use powerups freely.');
       updateStats();
       animateElement(targetValue);
       playEffect('reset');
@@ -677,44 +715,56 @@
       if (audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
-      playEffect('click');
-      processChange(score + 1, '+1 click');
+      const baseAdvance = 50;
+      let addValue = baseAdvance;
+      if (selectedPowerups.quick) addValue += 500;
+      if (selectedPowerups.strike) addValue += 1000;
+      if (selectedPowerups.mega) addValue += 5000;
+      if (selectedPowerups.giant) addValue += 10000;
+      let multiplier = 1;
+      if (selectedPowerups.doubleA) multiplier *= 2;
+      if (selectedPowerups.doubleB) multiplier *= 2;
+      const comboDescription = getComboDescription(addValue, multiplier);
+      playEffect(addValue === 50 ? 'click' : 'power');
+      processChange(score + addValue * multiplier, comboDescription);
+
+      if (selectedPowerups.doubleA) {
+        powerCounts.doubleA -= 1;
+        selectedPowerups.doubleA = powerCounts.doubleA > 0;
+      }
+      if (selectedPowerups.doubleB) {
+        powerCounts.doubleB -= 1;
+        selectedPowerups.doubleB = powerCounts.doubleB > 0;
+      }
+      selectedPowerups.quick = false;
+      selectedPowerups.strike = false;
+      selectedPowerups.mega = false;
+      selectedPowerups.giant = false;
+      updateStats();
     });
 
     quickButton.addEventListener('click', () => {
-      if (!active || powerCounts.quick === 0) return;
-      powerCounts.quick -= 1;
-      processChange(score + 500, 'Quick Surge');
+      togglePowerup('quick');
     });
 
     strikeButton.addEventListener('click', () => {
-      if (!active || powerCounts.strike === 0) return;
-      powerCounts.strike -= 1;
-      processChange(score + 1000, 'Power Strike');
+      togglePowerup('strike');
     });
 
     megaButton.addEventListener('click', () => {
-      if (!active || powerCounts.mega === 0) return;
-      powerCounts.mega -= 1;
-      processChange(score + 5000, 'Mega Boost');
+      togglePowerup('mega');
     });
 
     giantButton.addEventListener('click', () => {
-      if (!active || powerCounts.giant === 0) return;
-      powerCounts.giant -= 1;
-      processChange(score + 10000, 'Giant Jump');
+      togglePowerup('giant');
     });
 
     doubleAButton.addEventListener('click', () => {
-      if (!active || powerCounts.doubleA === 0 || score === 0) return;
-      powerCounts.doubleA -= 1;
-      processChange(score * 2, 'Double Strike');
+      togglePowerup('doubleA');
     });
 
     doubleBButton.addEventListener('click', () => {
-      if (!active || powerCounts.doubleB === 0 || score === 0) return;
-      powerCounts.doubleB -= 1;
-      processChange(score * 2, 'Double Surge');
+      togglePowerup('doubleB');
     });
 
     resetButton.addEventListener('click', () => {
